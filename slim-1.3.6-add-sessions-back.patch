@@ -1,0 +1,29 @@
+--- a/cfg.cpp	2013-10-08 17:24:06.811447587 +0900
++++ b/cfg.cpp	2013-10-08 17:22:34.726562231 +0900
+@@ -55,6 +55,7 @@
+ 	options.insert(option("shutdown_msg","The system is halting..."));
+ 	options.insert(option("reboot_msg","The system is rebooting..."));
+ 	options.insert(option("sessiondir",""));
++	options.insert(option("sessions",""));
+ 	options.insert(option("hidecursor","false"));
+ 
+ 	/* Theme stuff */
+@@ -290,9 +291,18 @@
+ 
+ void Cfg::fillSessionList(){
+ 	string strSessionDir  = getOption("sessiondir");
++    string strSessionList = getOption("sessions");
+ 
+ 	sessions.clear();
+ 
++    if( !strSessionList.empty()){
++        vector<string> vSessions;
++        split(vSessions,strSessionList,',',false);
++        for(vector<string>::iterator itr=vSessions.begin(); itr<vSessions.end();++itr){
++            sessions.push_back(pair<string,string>(*itr,*itr));
++        }
++    }
++
+ 	if( !strSessionDir.empty() ) {
+ 		DIR *pDir = opendir(strSessionDir.c_str());
+ 
